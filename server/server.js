@@ -5,6 +5,11 @@ import { clerkMiddleware } from '@clerk/express';
 import prisma from './configs/prisma.js';
 import { serve } from "inngest/express";
 import { inngest, functions } from "./inngest/index.js"
+import workspaceRouter from './routes/workspaceRoutes.js';
+import { protect } from './middlewares/authMiddleware.js';
+import projectRouter from './routes/projectRoutes.js';
+import taskRouter from './routes/taskRoutes.js';
+import commentRouter from './routes/commentRoutes.js';
 
 const app = express();
 
@@ -75,5 +80,11 @@ const startServer = async () => {
     process.exit(1);
   }
 };
+
+//Routes
+app.use("/api/workspaces", protect, workspaceRouter);
+app.use("/api.projects", protect, projectRouter);
+app.use("/api.taks", protect, taskRouter);
+app.use("/api/comments", protect, commentRouter);
 
 startServer();
